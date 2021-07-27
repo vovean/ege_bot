@@ -16,7 +16,7 @@ def register(upd: Update, ctx: CallbackContext):
     tguser = TGUser.objects.create(telegram_id=upd.effective_user.id, name=name)
     ctx.user_data['tguser'] = tguser
     upd.effective_user.send_message(
-        f"Привет, {name}! Теперь можешь приступать к заданиям",
+        f"Привет, {name}! Теперь можешь приступать к заданиям. Чтобы просмотреть справку напиши /help",
         reply_markup=get_state_keyboard(ConversationState.MAIN_MENU, ctx)
     )
     return ConversationState.MAIN_MENU

@@ -10,7 +10,7 @@ def start(upd: Update, ctx: CallbackContext):
     if tguser.exists():
         ctx.user_data['tguser'] = tguser.first()
         upd.effective_user.send_message(
-            'Привет! С возвращением!',
+            'Привет! С возвращением! Чтобы просмотреть справку напиши /help',
             reply_markup=get_state_keyboard(ConversationState.MAIN_MENU, ctx)
         )
         return ConversationState.MAIN_MENU

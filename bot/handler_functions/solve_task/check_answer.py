@@ -16,8 +16,8 @@ def check_answer(upd: Update, ctx: CallbackContext):
     if not correct:
         link = attempt.task.link_to_lesson
         upd.message.reply_text(
-            f"Не правильно, попробуй еще раз (или /cancel чтобы вернуться в главное меню)\n"
-            f"Ты можешь найти разбор здесь {link}" if link != '-' else ""
+            f"Не правильно, попробуй еще раз (или /cancel чтобы вернуться в главное меню)\n" +
+            (f"Ты можешь найти разбор здесь {link}" if link != '-' else "")
         )
         attempt.save()
         return

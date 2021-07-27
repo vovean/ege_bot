@@ -11,15 +11,17 @@ from telegram.ext import Updater, Dispatcher, CommandHandler, ConversationHandle
     Filters, PicklePersistence
 
 from bot.utils import ConversationState
-from bot.handler_functions import start, register, cancel, add_task, invalid_input, solve_task, statistics
+from bot.handler_functions import start, register, cancel, add_task, invalid_input, solve_task, statistics, get_help
 
 persistence = PicklePersistence(filename='saved_state.pickle')
 updater = Updater(token=TG_TOKEN, persistence=persistence)
 dispatcher: Dispatcher = updater.dispatcher
 
 start_handler = CommandHandler('start', start)
-invalid_input_handler = MessageHandler(Filters.all & ~Filters.regex("/cancel"), invalid_input)
 cancel_handler = CommandHandler('cancel', cancel)
+reset_solved_handler = CommandHandler('reset_solved', statistics.reset_solved)
+help_handler = CommandHandler('help', get_help)
+invalid_input_handler = MessageHandler(Filters.all & ~Filters.regex("/cancel"), invalid_input)
 
 add_task_handler = ConversationHandler(
     entry_points=[MessageHandler(Filters.regex("Добавить задание"), add_task.entry_point)],
@@ -37,7 +39,9 @@ add_task_handler = ConversationHandler(
     },
     fallbacks=[
         start_handler,
+        reset_solved_handler,
         cancel_handler,
+        help_handler,
         invalid_input_handler
     ],
     map_to_parent={
@@ -56,7 +60,9 @@ solve_task_handler = ConversationHandler(
     },
     fallbacks=[
         start_handler,
+        reset_solved_handler,
         cancel_handler,
+        help_handler,
         invalid_input_handler
     ],
     map_to_parent={
@@ -81,6 +87,8 @@ handlers = [
         fallbacks=[
             cancel_handler,
             start_handler,
+            reset_solved_handler,
+            help_handler,
             invalid_input_handler
         ],
         name="global_conversation", persistent=True

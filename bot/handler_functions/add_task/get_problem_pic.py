@@ -6,11 +6,15 @@ from bot.utils import ConversationState, get_filename_to_save
 
 
 def get_problem_pic(upd: Update, ctx: CallbackContext):
-    file = upd.message.effective_attachment.get_file().download_as_bytearray()
+    attachment = upd.message.effective_attachment
+    if isinstance(attachment, list):
+        attachment = attachment[-1]
+    tg_file = attachment.get_file()
+    file = tg_file.download_as_bytearray()
     dj_file = ContentFile(
         bytes(file),
         name=get_filename_to_save(upd.effective_user.id, ctx.user_data['adding_task']['number'],
-                                  upd.message.effective_attachment.mime_type)
+                                  tg_file.file_path.split('.')[-1])
     )
     ctx.user_data['adding_task']['problem_pic'] = dj_file
     upd.effective_user.send_message(

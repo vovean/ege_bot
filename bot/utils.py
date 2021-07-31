@@ -55,6 +55,5 @@ def get_state_keyboard(state, ctx: CallbackContext):
     }[state](is_admin)
 
 
-def get_filename_to_save(user_id, task_number, mime):
-    extension = mime.split('/')[-1] if '/' in mime else mime
+def get_filename_to_save(user_id, task_number, extension):
     return f'{task_number}_{user_id}_{datetime.now().strftime("%d-%m-%Y %H:%M:%S")}.{extension}'

@@ -29,7 +29,7 @@ add_task_handler = ConversationHandler(
         ConversationState.ADD_TASKS_NUMBER: [MessageHandler(Filters.regex(r'\d+'), add_task.get_number)],
         ConversationState.ADD_TASKS_PROBLEM: [
             MessageHandler(Filters.text & ~Filters.command, add_task.get_problem_text),
-            MessageHandler(Filters.document.image, add_task.get_problem_pic)
+            MessageHandler(Filters.document.image | Filters.photo, add_task.get_problem_pic)
         ],
         ConversationState.ADD_TASKS_ANSWER: [MessageHandler(Filters.text & ~Filters.command, add_task.get_answer)],
         ConversationState.ADD_TASKS_LINK: [MessageHandler(Filters.text & ~Filters.command, add_task.get_link)],
